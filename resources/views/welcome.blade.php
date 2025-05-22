@@ -244,10 +244,12 @@
         <div class="grid md:grid-cols-2 gap-8">
             @foreach($projects as $index => $project)
             <div class="project-card bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg transition-all duration-300 animate-slide-up" style="animation-delay: {{ 0.2 + ($index * 0.2) }}s">
-                <div class="h-48 overflow-hidden">
-                    <img src="{{ asset('storage/' . $project->image) }}" 
-                        alt="{{ $project->nama }}" 
-                        class="w-full h-full object-cover transition duration-500 hover:scale-105">
+                <div class="overflow-hidden rounded-lg">
+                    <div class="aspect-w-1 aspect-h-1">
+                        <img src="{{ asset('storage/' . $project->image) }}" 
+                            alt="{{ $project->nama }}" 
+                            class="object-cover w-full h-full transition duration-500 hover:scale-105">
+                    </div>
                 </div>
                 <div class="p-6">
                     <h3 class="text-xl font-bold mb-2">{{ $project->nama }}</h3>
