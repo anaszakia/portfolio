@@ -9,7 +9,7 @@ class PortfolioController extends Controller
 {
     public function index()
     {
-        $projects = Portfolio::all(); // Ambil semua data portfolio
+        $projects = Portfolio::latest()->get();
         return view('welcome', compact('projects'));
     }
 }
