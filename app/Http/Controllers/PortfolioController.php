@@ -9,7 +9,13 @@ class PortfolioController extends Controller
 {
     public function index()
     {
-        $projects = Portfolio::latest()->get();
+        $projects = Portfolio::latest()->take(3)->get();
         return view('welcome', compact('projects'));
+    }
+
+    public function allProjects()
+    {
+        $projects = Portfolio::latest()->get();
+        return view('all-projects', compact('projects'));
     }
 }
