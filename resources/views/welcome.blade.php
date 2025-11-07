@@ -136,6 +136,8 @@
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
             opacity: 0;
             transition: opacity 0.4s;
+            pointer-events: none;
+            z-index: 1;
         }
         
         .project-card:hover::after {
@@ -153,6 +155,19 @@
         
         .project-image {
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .project-overlay {
+            z-index: 10;
+            pointer-events: none;
+        }
+        
+        .project-overlay.active {
+            pointer-events: auto;
+        }
+        
+        .project-overlay a {
+            pointer-events: auto;
         }
         
         .nav-blur {
@@ -488,16 +503,16 @@
                     <img src="{{ asset('storage/' . $project->image) }}" 
                         alt="{{ $project->nama }}" 
                         class="project-image object-cover w-full h-full">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                        <div class="flex gap-3">
+                    <div class="project-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                        <div class="flex gap-3 relative z-20">
                             @if($project->link_demo)
-                            <a href="{{ $project->link_demo }}" target="_blank" class="px-4 py-2 bg-white text-gray-900 rounded-lg font-semibold text-sm hover:bg-blue-500 hover:text-white transition-all duration-300 flex items-center space-x-2">
+                            <a href="{{ $project->link_demo }}" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-white text-gray-900 rounded-lg font-semibold text-sm hover:bg-blue-500 hover:text-white transition-all duration-300 flex items-center space-x-2">
                                 <i class="fas fa-external-link-alt"></i>
                                 <span>Demo</span>
                             </a>
                             @endif
                             @if($project->link_sc)
-                            <a href="{{ $project->link_sc }}" target="_blank" class="px-4 py-2 bg-gray-900 text-white rounded-lg font-semibold text-sm hover:bg-purple-600 transition-all duration-300 flex items-center space-x-2">
+                            <a href="{{ $project->link_sc }}" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-gray-900 text-white rounded-lg font-semibold text-sm hover:bg-purple-600 transition-all duration-300 flex items-center space-x-2">
                                 <i class="fab fa-github"></i>
                                 <span>Code</span>
                             </a>
@@ -975,6 +990,20 @@
         
         // Add hover effect for project cards
         document.querySelectorAll('.project-card').forEach(card => {
+            const overlay = card.querySelector('.project-overlay');
+            
+            card.addEventListener('mouseenter', () => {
+                if (overlay) {
+                    overlay.classList.add('active');
+                }
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                if (overlay) {
+                    overlay.classList.remove('active');
+                }
+            });
+            
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
